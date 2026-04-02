@@ -3,6 +3,7 @@
     "description": "QuickBooks Online MCP server for Laravel — expose QBO as AI-callable tools",
     "type": "library",
     "license": "MIT",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Raju Rayhan",
@@ -12,7 +13,7 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0|^12.0",
-        "laravel/mcp": "^1.0",
+        "laravel/mcp": ">=0.1.0",
         "spinen/laravel-quickbooks-client": "^4.0",
         "guzzlehttp/guzzle": "^7.0"
     },
