@@ -1,0 +1,204 @@
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;display:flex;flex-direction:column;align-items:center;padding:24px;gap:16px;font-family:sans-serif}
+#wrap{width:1200px;height:630px;position:relative;background:#0f1117;border-radius:12px;overflow:hidden;flex-shrink:0}
+canvas{display:none}
+.dl{background:#1a1a2e;color:#a0aec0;border:1px solid #2d3748;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px;letter-spacing:.02em}
+.dl:hover{background:#2d3748;color:#fff}
+</style>
+
+<div id="wrap">
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+
+  <rect width="1200" height="630" fill="#0f1117"/>
+
+  <rect x="0" y="0" width="1200" height="630" fill="url(#bg-grid)" opacity="0.18"/>
+  <defs>
+    <pattern id="bg-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#ffffff" stroke-width="0.5"/>
+    </pattern>
+    <linearGradient id="fade-left" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0f1117" stop-opacity="1"/>
+      <stop offset="60%" stop-color="#0f1117" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fade-right" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="40%" stop-color="#0f1117" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0f1117" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="fade-top" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f1117" stop-opacity="1"/>
+      <stop offset="40%" stop-color="#0f1117" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fade-bottom" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="60%" stop-color="#0f1117" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0f1117" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="laravel-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF6B6B"/>
+      <stop offset="100%" stop-color="#FF2D20"/>
+    </linearGradient>
+    <linearGradient id="qb-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4AC97E"/>
+      <stop offset="100%" stop-color="#2CA01C"/>
+    </linearGradient>
+    <linearGradient id="mcp-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="glow-purple" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#4F46E5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#fade-left)"/>
+  <rect width="1200" height="630" fill="url(#fade-right)"/>
+  <rect width="1200" height="630" fill="url(#fade-top)"/>
+  <rect width="1200" height="630" fill="url(#fade-bottom)"/>
+
+  <ellipse cx="600" cy="80" rx="520" ry="90" fill="url(#glow-purple)" />
+
+  <g transform="translate(88, 68)">
+    <rect width="44" height="44" rx="10" fill="url(#laravel-g)"/>
+    <text x="22" y="30" text-anchor="middle" font-family="Georgia,serif" font-size="22" font-weight="700" fill="white">L</text>
+  </g>
+  <text x="143" y="97" font-family="ui-monospace,monospace" font-size="13" fill="#6b7280">rajurayhan</text>
+  <text x="143" y="116" font-family="ui-monospace,monospace" font-size="13" fill="#9ca3af">/</text>
+  <text x="155" y="116" font-family="ui-monospace,monospace" font-size="13" fill="#c4b5fd">laravel-quickbooks-mcp-server</text>
+
+  <text x="88" y="230"
+    font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+    font-size="62" font-weight="700" fill="#ffffff" letter-spacing="-1.5">Laravel</text>
+  <text x="88" y="306"
+    font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+    font-size="62" font-weight="700" letter-spacing="-1.5">
+    <tspan fill="#4AC97E">QuickBooks</tspan>
+    <tspan fill="#818CF8"> MCP</tspan>
+  </text>
+
+  <text x="88" y="364"
+    font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+    font-size="22" fill="#9ca3af" letter-spacing="0">
+    Expose QuickBooks Online as AI-callable MCP tools
+  </text>
+  <text x="88" y="394"
+    font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+    font-size="22" fill="#6b7280">
+    for any Laravel application.
+  </text>
+
+  <g transform="translate(88, 460)">
+    <rect width="120" height="34" rx="17" fill="#FF2D20" fill-opacity="0.15" stroke="#FF2D20" stroke-width="1" stroke-opacity="0.4"/>
+    <text x="60" y="22" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" fill="#FF6B6B">Laravel 11+</text>
+  </g>
+  <g transform="translate(222, 460)">
+    <rect width="110" height="34" rx="17" fill="#2CA01C" fill-opacity="0.15" stroke="#2CA01C" stroke-width="1" stroke-opacity="0.4"/>
+    <text x="55" y="22" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" fill="#4AC97E">PHP 8.2+</text>
+  </g>
+  <g transform="translate(346, 460)">
+    <rect width="92" height="34" rx="17" fill="#4F46E5" fill-opacity="0.15" stroke="#4F46E5" stroke-width="1" stroke-opacity="0.4"/>
+    <text x="46" y="22" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" fill="#818CF8">MCP 2025</text>
+  </g>
+  <g transform="translate(452, 460)">
+    <rect width="84" height="34" rx="17" fill="#374151" fill-opacity="0.5" stroke="#4b5563" stroke-width="1"/>
+    <text x="42" y="22" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" fill="#9ca3af">OAuth 2.0</text>
+  </g>
+
+  <g transform="translate(760, 120)">
+    <rect x="0" y="0" width="360" height="380" rx="16"
+      fill="#161b27" stroke="#1e2535" stroke-width="1"/>
+
+    <rect x="0" y="0" width="360" height="42" rx="16" fill="#1a2032"/>
+    <rect x="0" y="26" width="360" height="16" fill="#1a2032"/>
+    <circle cx="22" cy="21" r="6" fill="#FF5F57"/>
+    <circle cx="42" cy="21" r="6" fill="#FEBC2E"/>
+    <circle cx="62" cy="21" r="6" fill="#28C840"/>
+    <text x="180" y="26" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#4b5563">quickbooks-mcp.php</text>
+
+    <text x="24" y="74" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">01</text>
+    <text x="52" y="74" font-family="ui-monospace,monospace" font-size="12" fill="#c4b5fd">namespace</text>
+    <text x="124" y="74" font-family="ui-monospace,monospace" font-size="12" fill="#e2e8f0">Raju\QuickBooksMcp;</text>
+
+    <text x="24" y="100" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">02</text>
+
+    <text x="24" y="126" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">03</text>
+    <text x="52" y="126" font-family="ui-monospace,monospace" font-size="12" fill="#818CF8">#[Name(</text>
+    <text x="116" y="126" font-family="ui-monospace,monospace" font-size="12" fill="#4AC97E">'QuickBooks Online'</text>
+    <text x="268" y="126" font-family="ui-monospace,monospace" font-size="12" fill="#818CF8">)]</text>
+
+    <text x="24" y="152" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">04</text>
+    <text x="52" y="152" font-family="ui-monospace,monospace" font-size="12" fill="#818CF8">#[Version(</text>
+    <text x="136" y="152" font-family="ui-monospace,monospace" font-size="12" fill="#4AC97E">'1.0.0'</text>
+    <text x="196" y="152" font-family="ui-monospace,monospace" font-size="12" fill="#818CF8">)]</text>
+
+    <text x="24" y="178" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">05</text>
+    <text x="52" y="178" font-family="ui-monospace,monospace" font-size="12" fill="#c4b5fd">class</text>
+    <text x="90" y="178" font-family="ui-monospace,monospace" font-size="12" fill="#60a5fa">QuickBooksServer</text>
+    <text x="226" y="178" font-family="ui-monospace,monospace" font-size="12" fill="#c4b5fd">extends</text>
+    <text x="288" y="178" font-family="ui-monospace,monospace" font-size="12" fill="#60a5fa">Server</text>
+
+    <text x="24" y="204" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">06</text>
+    <text x="52" y="204" font-family="ui-monospace,monospace" font-size="12" fill="#e2e8f0">{</text>
+
+    <text x="24" y="230" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">07</text>
+    <text x="52" y="230" font-family="ui-monospace,monospace" font-size="12" fill="#c4b5fd">  protected</text>
+    <text x="128" y="230" font-family="ui-monospace,monospace" font-size="12" fill="#60a5fa">array</text>
+    <text x="164" y="230" font-family="ui-monospace,monospace" font-size="12" fill="#e2e8f0">$tools = [</text>
+
+    <text x="24" y="256" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">08</text>
+    <text x="68" y="256" font-family="ui-monospace,monospace" font-size="12" fill="#4AC97E">    SearchCustomersTool</text>
+    <text x="248" y="256" font-family="ui-monospace,monospace" font-size="12" fill="#e2e8f0">::class,</text>
+
+    <text x="24" y="282" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">09</text>
+    <text x="68" y="282" font-family="ui-monospace,monospace" font-size="12" fill="#4AC97E">    CreateInvoiceTool</text>
+    <text x="236" y="282" font-family="ui-monospace,monospace" font-size="12" fill="#e2e8f0">::class,</text>
+
+    <text x="24" y="308" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">10</text>
+    <text x="68" y="308" font-family="ui-monospace,monospace" font-size="12" fill="#4AC97E">    ReadInvoiceTool</text>
+    <text x="212" y="308" font-family="ui-monospace,monospace" font-size="12" fill="#e2e8f0">::class,</text>
+
+    <text x="24" y="334" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">11</text>
+    <text x="68" y="334" font-family="ui-monospace,monospace" font-size="12" fill="#6b7280">    // 46 more tools...</text>
+
+    <text x="24" y="360" font-family="ui-monospace,monospace" font-size="12" fill="#4b5563">12</text>
+    <text x="52" y="360" font-family="ui-monospace,monospace" font-size="12" fill="#e2e8f0">  ];</text>
+  </g>
+
+  <line x1="88" y1="538" x2="1112" y2="538" stroke="#1e2535" stroke-width="1"/>
+  <text x="88" y="568"
+    font-family="ui-monospace,monospace"
+    font-size="13" fill="#4b5563">
+    composer require rajurayhan/laravel-quickbooks-mcp
+  </text>
+  <text x="1112" y="568" text-anchor="end"
+    font-family="-apple-system,BlinkMacSystemFont,sans-serif"
+    font-size="13" fill="#374151">
+    github.com/rajurayhan
+  </text>
+
+</svg>
+</div>
+
+<button class="dl" onclick="downloadOG()">Download OG image (PNG)</button>
+
+<script>
+function downloadOG() {
+  const svg = document.querySelector('#wrap svg');
+  const xml = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([xml], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.onload = function() {
+    const c = document.createElement('canvas');
+    c.width = 1200; c.height = 630;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(url);
+    const a = document.createElement('a');
+    a.download = 'og-laravel-quickbooks-mcp.png';
+    a.href = c.toDataURL('image/png');
+    a.click();
+  };
+  img.src = url;
+}
+</script>
