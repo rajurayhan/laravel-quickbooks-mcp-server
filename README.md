@@ -39,7 +39,7 @@ Your host application must also have:
 ### 1. Install via Composer
 
 ```bash
-composer require rajurayhan/laravel-quickbooks-mcp
+composer require rajurayhan/laravel-quickbooks-mcp-server
 ```
 
 ### 2. Publish package assets
