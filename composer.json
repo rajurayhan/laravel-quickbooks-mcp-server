@@ -1,0 +1,42 @@
+{
+    "name": "rajurayhan/laravel-quickbooks-mcp-server",
+    "description": "QuickBooks Online MCP server for Laravel — expose QBO as AI-callable tools",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raju Rayhan",
+            "homepage": "https://github.com/rajurayhan"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.0|^12.0",
+        "laravel/mcp": "^1.0",
+        "spinen/laravel-quickbooks-client": "^4.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "suggest": {
+        "laravel/passport": "Required if using auth guard 'api' (Passport OAuth2).",
+        "laravel/sanctum": "Required if using auth guard 'sanctum'."
+    },
+    "autoload": {
+        "psr-4": {
+            "Raju\\QuickBooksMcp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Raju\\QuickBooksMcp\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Raju\\QuickBooksMcp\\QuickBooksMcpServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
