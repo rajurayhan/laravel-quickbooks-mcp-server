@@ -10,6 +10,9 @@
 namespace Raju\QuickBooksMcp;
 
 use Illuminate\Support\ServiceProvider;
+use Raju\QuickBooksMcp\Exceptions\QuickBooksAuthException;
+use Raju\QuickBooksMcp\Models\QuickBooksConnection;
+use Raju\QuickBooksMcp\Services\QuickBooksDataServiceFactory;
 use Raju\QuickBooksMcp\Services\QuickBooksService;
 
 class QuickBooksMcpServiceProvider extends ServiceProvider
@@ -18,10 +21,29 @@ class QuickBooksMcpServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/quickbooks-mcp.php', 'quickbooks-mcp');
 
-        $this->app->singleton(QuickBooksService::class, function ($app) {
-            return new QuickBooksService(
-                $app->make(\Spinen\QuickBooks\Client::class)
-            );
+        $this->app->singleton(QuickBooksDataServiceFactory::class);
+
+        // Resolved fresh per request so each request gets the correct user's tokens.
+        $this->app->bind(QuickBooksService::class, function ($app) {
+            $factory = $app->make(QuickBooksDataServiceFactory::class);
+            $user    = auth()->user();
+
+            if (!$user) {
+                throw new QuickBooksAuthException('No authenticated user for QuickBooks service.');
+            }
+
+            $connection = QuickBooksConnection::where('user_id', $user->getKey())
+                ->where('active', true)
+                ->latest('last_used_at')
+                ->first();
+
+            if (!$connection) {
+                throw new QuickBooksAuthException(
+                    'No active QuickBooks connection found. Please connect via /quickbooks/connect.'
+                );
+            }
+
+            return new QuickBooksService($factory->makeFromConnection($connection));
         });
     }
 
@@ -42,8 +64,8 @@ class QuickBooksMcpServiceProvider extends ServiceProvider
             ], 'quickbooks-mcp-routes');
 
             $this->publishes([
-                __DIR__ . '/../config/quickbooks-mcp.php' => config_path('quickbooks-mcp.php'),
-                __DIR__ . '/../database/migrations/'       => database_path('migrations'),
+                __DIR__ . '/../config/quickbooks-mcp.php'  => config_path('quickbooks-mcp.php'),
+                __DIR__ . '/../database/migrations/'        => database_path('migrations'),
                 __DIR__ . '/../routes/quickbooks-mcp.php'  => base_path('routes/quickbooks-mcp.php'),
             ]);
         }

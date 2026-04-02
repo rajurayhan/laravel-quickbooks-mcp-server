@@ -14,8 +14,8 @@
         "php": "^8.2",
         "laravel/framework": "^11.0|^12.0",
         "laravel/mcp": ">=0.1.0",
-        "spinen/laravel-quickbooks-client": "^4.0",
-        "guzzlehttp/guzzle": "^7.0"
+        "quickbooks/v3-php-sdk": "^6.2",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "suggest": {
         "laravel/passport": "Required if using auth guard 'api' (Passport OAuth2).",

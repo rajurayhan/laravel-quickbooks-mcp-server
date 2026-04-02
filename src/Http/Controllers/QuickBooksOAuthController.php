@@ -12,11 +12,11 @@ namespace Raju\QuickBooksMcp\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Raju\QuickBooksMcp\Models\QuickBooksConnection;
-use Spinen\QuickBooks\Client as QBClient;
+use Raju\QuickBooksMcp\Services\QuickBooksDataServiceFactory;
 
 class QuickBooksOAuthController extends Controller
 {
-    public function __construct(protected QBClient $qb) {}
+    public function __construct(protected QuickBooksDataServiceFactory $factory) {}
 
     /**
      * Redirect the user to Intuit's OAuth consent screen.
@@ -27,7 +27,10 @@ class QuickBooksOAuthController extends Controller
         $state = bin2hex(random_bytes(16));
         session(['qbo_oauth_state' => $state]);
 
-        return redirect($this->qb->getAuthorizationCodeURL($state));
+        $helper  = $this->factory->makeForAuth()->getOAuth2LoginHelper();
+        $authUrl = $helper->getAuthorizationCodeURL() . '&state=' . $state;
+
+        return redirect($authUrl);
     }
 
     /**
@@ -48,21 +51,31 @@ class QuickBooksOAuthController extends Controller
         }
 
         try {
-            // Exchange code for tokens — spinen stores them in quickbooks_tokens
-            $this->qb->parseRedirectURL($request->all(), auth()->user());
+            $dataService = $this->factory->makeForAuth();
+            $helper      = $dataService->getOAuth2LoginHelper();
 
-            $realmId     = $request->get('realmId');
-            $companyName = $this->fetchCompanyName();
+            $token = $helper->exchangeAuthorizationCodeForToken(
+                $request->get('code'),
+                $request->get('realmId')
+            );
 
-            QuickBooksConnection::updateOrCreate(
+            $dataService->updateOAuth2Token($token);
+
+            $realmId = $token->getRealmID() ?: $request->get('realmId');
+
+            $connection = QuickBooksConnection::updateOrCreate(
                 ['realm_id' => $realmId],
                 [
                     'user_id'      => auth()->id(),
-                    'company_name' => $companyName,
                     'active'       => true,
                     'connected_at' => now(),
                 ]
             );
+
+            $this->factory->persistToken($connection, $token);
+
+            $companyName = $this->fetchCompanyName($dataService);
+            $connection->update(['company_name' => $companyName]);
 
             return response()->json([
                 'message'      => 'QuickBooks connected successfully.',
@@ -83,15 +96,20 @@ class QuickBooksOAuthController extends Controller
      */
     public function disconnect(Request $request)
     {
-        try {
-            $this->qb->revokeToken(auth()->user());
-        } catch (\Exception) {
-            // Token may already be expired — continue with local cleanup
-        }
-
-        QuickBooksConnection::where('realm_id', $request->get('realm_id'))
+        $connection = QuickBooksConnection::where('realm_id', $request->get('realm_id'))
             ->where('user_id', auth()->id())
-            ->delete();
+            ->first();
+
+        if ($connection) {
+            try {
+                $helper = $this->factory->makeFromConnection($connection)->getOAuth2LoginHelper();
+                $helper->revokeToken($connection->access_token);
+            } catch (\Exception) {
+                // Token may already be expired — continue with local cleanup
+            }
+
+            $connection->delete();
+        }
 
         return response()->json(['message' => 'QuickBooks disconnected.']);
     }
@@ -109,10 +127,10 @@ class QuickBooksOAuthController extends Controller
         );
     }
 
-    protected function fetchCompanyName(): ?string
+    protected function fetchCompanyName(\QuickBooksOnline\API\DataService\DataService $dataService): ?string
     {
         try {
-            return $this->qb->getDataService()->getCompanyInfo()?->CompanyName ?? null;
+            return $dataService->getCompanyInfo()?->CompanyName ?? null;
         } catch (\Exception) {
             return null;
         }

@@ -11,32 +11,39 @@ namespace Raju\QuickBooksMcp\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Spinen\QuickBooks\Client as QBClient;
+use Raju\QuickBooksMcp\Models\QuickBooksConnection;
+use Raju\QuickBooksMcp\Services\QuickBooksDataServiceFactory;
 
 class RefreshQuickBooksToken
 {
-    public function __construct(protected QBClient $qb) {}
+    public function __construct(protected QuickBooksDataServiceFactory $factory) {}
 
     public function handle(Request $request, Closure $next)
     {
         try {
-            $token = $request->user()?->quickBooksToken;
+            $user = $request->user();
 
-            if ($token && $this->isExpiringSoon($token)) {
-                $this->qb->refreshTokens($request->user());
+            if (!$user) {
+                return $next($request);
+            }
+
+            $bufferMinutes = config('quickbooks-mcp.token_refresh_buffer_minutes', 5);
+
+            $connection = QuickBooksConnection::where('user_id', $user->getKey())
+                ->where('active', true)
+                ->latest('last_used_at')
+                ->first();
+
+            if ($connection && $connection->isAccessTokenExpiringSoon($bufferMinutes)) {
+                $dataService = $this->factory->makeFromConnection($connection);
+                $newToken    = $dataService->getOAuth2LoginHelper()->refreshToken();
+                $dataService->updateOAuth2Token($newToken);
+                $this->factory->persistToken($connection, $newToken);
             }
         } catch (\Exception $e) {
             logger()->warning('QBO token refresh failed: ' . $e->getMessage());
         }
 
         return $next($request);
-    }
-
-    protected function isExpiringSoon($token): bool
-    {
-        $buffer = config('quickbooks-mcp.token_refresh_buffer_minutes', 5);
-        return now()->addMinutes($buffer)->isAfter(
-            $token->access_token_expires_at ?? now()
-        );
     }
 }

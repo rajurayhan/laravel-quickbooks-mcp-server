@@ -9,76 +9,51 @@
  */
 namespace Raju\QuickBooksMcp\Services;
 
-use Spinen\QuickBooks\Client as QBClient;
 use QuickBooksOnline\API\DataService\DataService;
 use Raju\QuickBooksMcp\Exceptions\QuickBooksAuthException;
 use Raju\QuickBooksMcp\Exceptions\QuickBooksToolException;
 
 class QuickBooksService
 {
-    protected QBClient $client;
-    protected ?string $realmId = null;
-
-    public function __construct(QBClient $client)
-    {
-        $this->client = $client;
-    }
-
-    public function forRealm(string $realmId): static
-    {
-        $clone = clone $this;
-        $clone->realmId = $realmId;
-        return $clone;
-    }
+    public function __construct(protected DataService $dataService) {}
 
     public function dataService(): DataService
     {
-        try {
-            return $this->client->getDataService();
-        } catch (\Exception $e) {
-            throw new QuickBooksAuthException(
-                'Failed to connect to QuickBooks: ' . $e->getMessage()
-            );
-        }
+        return $this->dataService;
     }
 
     public function query(string $sql): array
     {
-        $ds      = $this->dataService();
-        $results = $ds->Query($sql);
-        $this->throwIfError($ds);
+        $results = $this->dataService->Query($sql);
+        $this->throwIfError($this->dataService);
         return $results ?? [];
     }
 
     public function findById(string $entityType, string $id): mixed
     {
-        $ds     = $this->dataService();
-        $result = $ds->FindById($entityType, $id);
-        $this->throwIfError($ds);
+        $result = $this->dataService->FindById($entityType, $id);
+        $this->throwIfError($this->dataService);
         return $result;
     }
 
     public function create(mixed $entity): mixed
     {
-        $ds     = $this->dataService();
-        $result = $ds->Add($entity);
-        $this->throwIfError($ds);
+        $result = $this->dataService->Add($entity);
+        $this->throwIfError($this->dataService);
         return $result;
     }
 
     public function update(mixed $entity): mixed
     {
-        $ds     = $this->dataService();
-        $result = $ds->Update($entity);
-        $this->throwIfError($ds);
+        $result = $this->dataService->Update($entity);
+        $this->throwIfError($this->dataService);
         return $result;
     }
 
     public function delete(mixed $entity): mixed
     {
-        $ds     = $this->dataService();
-        $result = $ds->Delete($entity);
-        $this->throwIfError($ds);
+        $result = $this->dataService->Delete($entity);
+        $this->throwIfError($this->dataService);
         return $result;
     }
 

@@ -2,6 +2,13 @@
 
 return [
     /*
+     * OAuth2 credentials from your Intuit Developer app.
+     * https://developer.intuit.com/app/developer/myapps
+     */
+    'client_id'     => env('QUICKBOOKS_CLIENT_ID'),
+    'client_secret' => env('QUICKBOOKS_CLIENT_SECRET'),
+
+    /*
      * The route path where the MCP server is exposed.
      * This is used inside your published routes/quickbooks-mcp.php.
      * Example: https://yourdomain.com/mcp/quickbooks
